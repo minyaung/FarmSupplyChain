@@ -1,0 +1,10 @@
+!SESSION 2022-08-14 20:51:26.755 -----------------------------------------------
+eclipse.buildId=4.14.0.I20191210-0610
+java.version=1.8.0_342
+java.vendor=Private Build
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.java.product
+Command-line arguments:  -os linux -ws gtk -arch x86_64 -product org.eclipse.epp.package.java.product
+
+!ENTRY org.eclipse.core.resources 2 10035 2022-08-14 20:51:28.824
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.

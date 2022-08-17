@@ -1,0 +1,156 @@
+package FarmSupplyChain;
+
+import org.hyperledger.fabric.contract.Context;
+import org.hyperledger.fabric.contract.ContractInterface;
+import org.hyperledger.fabric.contract.annotation.Contract;
+import org.hyperledger.fabric.contract.annotation.Default;
+import org.hyperledger.fabric.contract.annotation.Info;
+import org.hyperledger.fabric.contract.annotation.Transaction;
+import org.hyperledger.fabric.shim.ChaincodeException;
+import org.hyperledger.fabric.shim.ChaincodeStub;
+import com.owlike.genson.Genson;
+import java.util.Date;
+
+@Contract(
+       name = "FarmSupplyChain",
+       info = @Info(
+               title = "FarmSupplyChain contract",
+               description = "A Sample FarmProduct transfer chaincode example",
+               version = "0.0.1-SNAPSHOT"))
+
+
+@Default
+public final class FarmProductTransfer implements ContractInterface {
+
+	private final Genson genson = new Genson();
+	private enum FarmSupplyChainErrors {
+	        FarmProduct_NOT_FOUND,
+	        FarmProduct_ALREADY_EXISTS
+	    }
+	
+	
+	/**
+    * Add some initial properties to the ledger
+    *
+    * @param ctx the transaction context
+    */
+   @Transaction()
+   public void initLedger(final Context ctx) {
+   	
+       ChaincodeStub stub= ctx.getStub();
+       
+		Date harvest_date = new Date();
+		Date prod_dist_tran_date = new Date();
+		Date dist_ret_tran_date = new Date();
+		String prod_address = "64-1550 Kamehameha Hwy. Wahiawa, Hawaii 96786";
+		String dist_address = "107 Randolph Street, Knoxville, TN 37915";
+		String ret_address = "Costco Wholesale P.O. Box 34331. Seattle, WA 98124";
+       
+       FarmProduct FarmProduct = new FarmProduct(
+    		   "1",
+    		   "Pineapple",
+    		   "Dole",
+    		   prod_address,
+    		   harvest_date,
+    		   "A&B Distributor",
+    		   dist_address,
+    		   prod_dist_tran_date,
+    		   "Costco",
+    		   ret_address,
+    		   dist_ret_tran_date
+    		   );
+       
+       String FarmProductState = genson.serialize(FarmProduct);
+       
+       stub.putStringState("1", FarmProductState);
+   }
+   
+   
+   /**
+    * Add new FarmProduct on the ledger.
+    *
+    * @param ctx the transaction context
+    * @param id the key for the new FarmProduct
+    * @param model the model of the new FarmProduct
+    * @param ownername the owner of the new FarmProduct
+    * @param value the value of the new FarmProduct
+    * @return the created FarmProduct
+    */
+	
+   @Transaction()
+   public FarmProduct addNewFarmProduct(final Context ctx, final String id, final String model,
+           final String ownername, final String value) {
+       
+   	ChaincodeStub stub = ctx.getStub();
+
+       String FarmProductState = stub.getStringState(id);
+       
+       if (!FarmProductState.isEmpty()) {
+           String errorMessage = String.format("FarmProduct %s already exists", id);
+           System.out.println(errorMessage);
+           throw new ChaincodeException(errorMessage, FarmSupplyChainErrors.FarmProduct_ALREADY_EXISTS.toString());
+       }
+       
+       FarmProduct FarmProduct = new FarmProduct(id, model, ownername,value);
+       
+       FarmProductState = genson.serialize(FarmProduct);
+       
+       stub.putStringState(id, FarmProductState); 
+       
+       return FarmProduct;
+   }
+
+
+   	/**
+	     * Retrieves a FarmProduct based upon FarmProduct Id from the ledger.
+	     *
+	     * @param ctx the transaction context
+	     * @param id the key
+	     * @return the FarmProduct found on the ledger if there was one
+	     */
+   	@Transaction()
+	    public FarmProduct queryFarmProductById(final Context ctx, final String id) {
+	        ChaincodeStub stub = ctx.getStub();
+	        String FarmProductState = stub.getStringState(id);
+
+	        if (FarmProductState.isEmpty()) {
+	            String errorMessage = String.format("FarmProduct %s does not exist", id);
+	            System.out.println(errorMessage);
+	            throw new ChaincodeException(errorMessage, FarmSupplyChainErrors.FarmProduct_NOT_FOUND.toString());
+	        }
+	        
+	        FarmProduct FarmProduct = genson.deserialize(FarmProductState, FarmProduct.class);
+	        return FarmProduct;
+	    }
+   	
+       /**
+  	     * Changes the owner of a FarmProduct on the ledger.
+  	     *
+  	     * @param ctx the transaction context
+  	     * @param id the key
+  	     * @param newOwner the new owner
+  	     * @return the updated FarmProduct
+  	     */
+  	    @Transaction()
+  	    public FarmProduct changeFarmProductOwnership(final Context ctx, final String id, final String newFarmProductOwner) {
+  	        ChaincodeStub stub = ctx.getStub();
+
+  	        String FarmProductState = stub.getStringState(id);
+
+  	        if (FarmProductState.isEmpty()) {
+  	            String errorMessage = String.format("FarmProduct %s does not exist", id);
+  	            System.out.println(errorMessage);
+  	            throw new ChaincodeException(errorMessage, FarmSupplyChainErrors.FarmProduct_NOT_FOUND.toString());
+  	        }
+
+  	        FarmProduct FarmProduct = genson.deserialize(FarmProductState, FarmProduct.class);
+
+  	        FarmProduct newFarmProduct = new FarmProduct(FarmProduct.getId(), FarmProduct.getModel(), newFarmProductOwner, FarmProduct.getValue());
+  	        
+  	        String newFarmProductState = genson.serialize(newFarmProduct);
+  	        
+  	        stub.putStringState(id, newFarmProductState);
+
+  	        return newFarmProduct;
+  	    } 
+}

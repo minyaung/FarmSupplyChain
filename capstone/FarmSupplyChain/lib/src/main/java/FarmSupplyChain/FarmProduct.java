@@ -1,0 +1,219 @@
+package FarmSupplyChain;
+
+import com.owlike.genson.annotation.JsonProperty;
+
+import org.hyperledger.fabric.contract.Context;
+import org.hyperledger.fabric.contract.annotation.DataType;
+import org.hyperledger.fabric.contract.annotation.Property;
+import java.util.Objects;
+// import java.util.Date;
+
+public class FarmProduct {
+
+	@Property()
+	// productId: Asset Id
+	private final String productId;
+	
+	@Property()
+	// productDescription: Description of the asset
+	private final String productDescription;
+	
+	@Property()
+	// producerName: Name of the producer or farmer
+	private final String producerName;
+	
+	@Property()
+	// producerAddress: Address of the producer or farmer
+	private final String producerAddress;
+	
+	@Property()
+	// harvestDate: Date of the harvest
+	private final String harvestDate;
+	
+	@Property()
+	// distributerName: Name of the distributer
+	private final String distributerName;
+	
+	@Property()
+	// distributerAddress: Address of the distributer
+	private final String distributerAddress;
+	
+	@Property()
+	// prodToDistDate: Date of transfer from producer to distributer
+	private final String prodToDistDate;
+	
+	@Property()
+	// retailerName: Name of the retailer
+	private final String retailerName;
+	
+	@Property()
+	// retailerAddress: Address of the retailer 
+	private final String retailerAddress;
+	
+	@Property()
+	// distToRetaDate: Date of transfer from distributer to retailer
+	private final String distToRetaDate;
+
+	public String getProductId() {
+		return productId;
+	}
+
+	public String getProductDescription() {
+		return productDescription;
+	}
+
+	public String getProducerName() {
+		return producerName;
+	}
+
+	public String getProducerAddress() {
+		return producerAddress;
+	}
+
+	public String getHarvestDate() {
+		return harvestDate;
+	}
+
+	public String getDistributerName() {
+		return distributerName;
+	}
+
+	public String getDistributerAddress() {
+		return distributerAddress;
+	}
+
+	public String getProdToDistDate() {
+		return prodToDistDate;
+	}
+
+	public String getRetailerName() {
+		return retailerName;
+	}
+
+	public String getRetailerNameAddress() {
+		return retailerAddress;
+	}
+
+	public String getDistToRetaDate() {
+		return distToRetaDate;
+	}
+	
+	public FarmProduct(
+			@JsonProperty("productId") final String productId, 
+			@JsonProperty("productDescription") final String productDescription, 
+			@JsonProperty("producerName") final String producerName,
+			@JsonProperty("producerAddress") final String producerAddress, 
+			@JsonProperty("harvestDate") final String harvestDate, 
+			@JsonProperty("distributerName") final String distributerName,
+			@JsonProperty("distributerAddress") final String distributerAddress, 
+			@JsonProperty("prodToDistDate") final String prodToDistDate, 
+			@JsonProperty("retailerName") final String retailerName,
+			@JsonProperty("retailerAddress") final String retailerAddress, 
+			@JsonProperty("distToRetaDate") final String distToRetaDate) 
+	{
+		this.productId = productId;
+		this.productDescription = productDescription;
+		this.producerName = producerName;
+		this.producerAddress = producerAddress;
+		this.harvestDate = harvestDate;
+		this.distributerName = distributerName;
+		this.distributerAddress = distributerAddress;
+		this.prodToDistDate = prodToDistDate;
+		this.retailerName = retailerName;
+		this.retailerAddress = retailerAddress;
+		this.distToRetaDate = distToRetaDate;
+	}
+/*	
+	public FarmProduct(
+			@JsonProperty("productId") final String productId, 
+			@JsonProperty("productDescription") final String productDescription, 
+			@JsonProperty("producerName") final String producerName,
+			@JsonProperty("producerAddress") final String producerAddress, 
+			@JsonProperty("harvestDate") final String harvestDate) 
+	{
+		this.productId = productId;
+		this.productDescription = productDescription;
+		this.producerName = producerName;
+		this.producerAddress = producerAddress;
+		this.harvestDate = harvestDate;
+		this.distributerName = "";
+		this.distributerAddress = "";
+		this.prodToDistDate = "";
+		this.retailerName = "";
+		this.retailerAddress = "";
+		this.distToRetaDate = "";
+	}
+*/		
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if ((obj == null) || (getClass() != obj.getClass())) {
+			return false;
+		}
+
+		FarmProduct other = (FarmProduct) obj;
+
+		return Objects.deepEquals(new String[] { 
+				getProductId(), 
+				getProductDescription(),
+				getProducerName(),
+				getProducerAddress(),
+				getHarvestDate().toString(),
+				getDistributerName(),
+				getDistributerAddress(),
+				getProdToDistDate().toString(),
+				getRetailerName(),
+				getRetailerNameAddress(),
+				getDistToRetaDate().toString() },
+				new String[] { 
+						other.getProductId(), 
+						other.getProductDescription(),
+						other.getProducerName(),
+						other.getProducerAddress(),
+						other.getHarvestDate(),
+						other.getDistributerName(),
+						other.getDistributerAddress(),
+						other.getProdToDistDate(),
+						other.getRetailerName(),
+						other.getRetailerNameAddress(),
+						other.getDistToRetaDate() });
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(
+				getProductId(), 
+				getProductDescription(),
+				getProducerName(),
+				getProducerAddress(),
+				getHarvestDate(),
+				getDistributerName(),
+				getDistributerAddress(),
+				getProdToDistDate(),
+				getRetailerName(),
+				getRetailerNameAddress(),
+				getDistToRetaDate() );
+	}
+	
+	@Override
+	public String toString() {
+		return this.getClass().getSimpleName() + "@" + Integer.toHexString(hashCode()) 
+			+ " ["
+			+ " productId=" + productId 
+			+ ", productDescription=" + productDescription
+			+ ", producerName=" + producerName 
+			+ ", producerAddress=" + producerAddress 
+			+ ", harvestDate=" + harvestDate 
+			+ ", distributerName=" + distributerName
+			+ ", distributerAddress=" + distributerAddress 
+			+ ", prodToDistDate=" + prodToDistDate
+			+ ", retailerName=" + retailerName 
+			+ ", retailerAddress=" + retailerAddress
+			+ ", distToRetaDate=" + distToRetaDate 
+			+ "]";
+	}
+	
+}

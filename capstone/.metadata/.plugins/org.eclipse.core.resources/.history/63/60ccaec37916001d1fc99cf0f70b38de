@@ -1,0 +1,187 @@
+package FarmSupplyChain;
+
+import com.owlike.genson.annotation.JsonProperty;
+import org.hyperledger.fabric.contract.annotation.DataType;
+import org.hyperledger.fabric.contract.annotation.Property;
+import java.util.Objects;
+import java.util.Date;
+
+public class FarmProduct {
+
+	@Property()
+	// productId: Asset Id
+	private final String id;
+	
+	@Property()
+	// productDescription: Description of the asset
+	private final String description;
+	
+	@Property()
+	// producerName: Name of the producer or farmer
+	private final String producer;
+	
+	@Property()
+	// producerAddress: Address of the producer or farmer
+	private final String prodAddress;
+	
+	@Property()
+	// harvestDate: Date of the harvest
+	private final Date harvestDate;
+	
+	@Property()
+	// distributerName: Name of the distributer
+	private final String distributer;
+	
+	@Property()
+	// distributerAddress: Address of the distributer
+	private final String distAddress;
+	
+	@Property()
+	// prodToDistDate: Date of transfer from producer to distributer
+	private final Date prodDistTranDate;
+	
+	@Property()
+	// retailerName: Name of the retailer
+	private final String retailer;
+	
+	@Property()
+	// retailerAddress: Address of the retailer 
+	private final String retAddress;
+	
+	@Property()
+	// distToRetaDate: Date of transfer from distributer to retailer
+	private final Date distRetTranDate;
+
+	
+	private String getId() {
+		return id;
+	}
+
+	private String getDescription() {
+		return description;
+	}
+
+	private String getProducer() {
+		return producer;
+	}
+
+	private String getProdAddress() {
+		return prodAddress;
+	}
+
+	private Date getHarvestDate() {
+		return harvestDate;
+	}
+
+	private String getDistributer() {
+		return distributer;
+	}
+
+	private String getDistAddress() {
+		return distAddress;
+	}
+
+	private Date getProdDistTranDate() {
+		return prodDistTranDate;
+	}
+
+	private String getRetailer() {
+		return retailer;
+	}
+
+	private String getRetAddress() {
+		return retAddress;
+	}
+
+	private Date getDistRetTranDate() {
+		return distRetTranDate;
+	}
+
+	public FarmProduct(
+			@JsonProperty("id") final String id, 
+			@JsonProperty("description") final String description, 
+			@JsonProperty("producer") final String producer,
+			@JsonProperty("prodAddress") final String prodAddress, 
+			@JsonProperty("harvestDate") final Date harvestDate, 
+			@JsonProperty("distributer") final String distributer,
+			@JsonProperty("distAddress") final String distAddress, 
+			@JsonProperty("prodDistTranDate") final Date prodDistTranDate, 
+			@JsonProperty("retailer") final String retailer,
+			@JsonProperty("retAddress") final String retAddress, 
+			@JsonProperty("distRetTranDate") final Date distRetTranDate) 
+	{
+		this.id = id;
+		this.description = description;
+		this.producer = producer;
+		this.prodAddress = prodAddress;
+		this.harvestDate = harvestDate;
+		this.distributer = distributer;
+		this.distAddress = distAddress;
+		this.prodDistTranDate = prodDistTranDate;
+		this.retailer = retailer;
+		this.retAddress = retAddress;
+		this.distRetTranDate = distRetTranDate;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if ((obj == null) || (getClass() != obj.getClass())) {
+			return false;
+		}
+
+		FarmProduct other = (FarmProduct) obj;
+
+		return Objects.deepEquals(new String[] { 
+				getId(), 
+				getDescription(),
+				getProducer(),
+				getProdAddress(),
+				getHarvestDate().toString(),
+				getDistributer(),
+				getDistAddress(),
+				getProdDistTranDate().toString(),
+				getRetailer(),
+				getRetAddress(),
+				getDistRetTranDate().toString() },
+				new String[] { 
+						other.getId(), 
+						other.getDescription(),
+						other.getProducer(),
+						other.getProdAddress(),
+						other.getHarvestDate().toString(),
+						other.getDistributer(),
+						other.getDistAddress(),
+						other.getProdDistTranDate().toString(),
+						other.getRetailer(),
+						other.getRetAddress(),
+						other.getDistRetTranDate().toString() });
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(
+				getId(), 
+				getDescription(),
+				getProducer(),
+				getProdAddress(),
+				getHarvestDate().toString(),
+				getDistributer(),
+				getDistAddress(),
+				getProdDistTranDate().toString(),
+				getRetailer(),
+				getRetAddress(),
+				getDistRetTranDate().toString() );
+	}
+
+	@Override
+	public String toString() {
+		return this.getClass().getSimpleName() + "@" + Integer.toHexString(hashCode()) + " [id=" + id + ", model=" + model
+				+ ", owner=" + owner + ", value=" + value + "]";
+	}
+
+	
+}
